@@ -1,54 +1,51 @@
 const questionsData = [
     {
         id: 1,
-        question: "JavaScript is an ____________ language.",
-        options: [
-            'object oriented',
-            'object based',
-            'procedural',
-            'functional'
+        question : "Javascript is an _______ language",
+        options : [
+            'Object-Oriented',
+            'Object-Based',
+            'Procedural',
         ]
     },
     {
         id: 2,
-        question: "What does CSS stand for?",
-        options: [
-            'Cascading Style Sheets',
-            'Computer Style Sheets',
-            'Creative Style Sheets',
-            'Cascaded Style Sheets'
+        question : "Following methods can be used to display data in some form using Javascript",
+        options : [
+            'document.write()',
+            'console.log()',
+            'window.alert()',
         ]
     },
     {
         id: 3,
-        question: "Which symbol is used for single-line comments in JavaScript?",
-        options: [
-            '//',
-            '--',
-            '/*',
-            '#'
+        question : "When an operator value is NULL, the typeof returned by the unary operator is:",
+        options : [
+            'Boolean',
+            'Undefined',
+            'Object',
         ]
     },
     {
         id: 4,
-        question: "What is the latest version of HTML?",
-        options: [
-            'HTML5',
-            'XHTML',
-            'HTML4',
-            'HTML6'
+        question : "What does the toString() method return?",
+        options : [
+            'Return Object',
+            'Return String',
+            'Return Integer'
         ]
     },
     {
         id: 5,
-        question: "What is the result of '5' + 3 in JavaScript?",
-        options: [
-            '53',
-            '8',
-            'TypeError',
-            '35'
+        question : "Which function is used to serialize an object into a JSON string?",
+        options : [
+            'stringify()',
+            'parse()',
+            'convert()',
         ]
     }
 ];
 
 export default questionsData;
+
+export const answers = [0, 1, 2, 1, 0];
