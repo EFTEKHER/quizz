@@ -1,12 +1,23 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import questionsData, { answers } from "../database/data";
+import axios from 'axios';
 
 /** redux actions */
-import * as Action from '../redux/questionReducer'
+import * as Action from '../redux/questionReducer';
 
-/** fetch question hook to fetch api data and set value to store */
-export const useFetchQestion = () => {
+/** Helper function to fetch data from the server */
+export async function getServerData(url) {
+    try {
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching data from server:", error);
+        throw error; // Rethrow the error to handle it in the calling function
+    }
+}
+
+/** Fetch question hook to fetch API data and set value to store */
+export const useFetchQuestion = () => {
     const dispatch = useDispatch();   
     const [getData, setGetData] = useState({ isLoading : false, apiData : [], serverError: null});
 
@@ -16,20 +27,16 @@ export const useFetchQestion = () => {
         /** async function fetch backend data */
         (async () => {
             try {
-                let question = await questionsData;
-         
-                if(question.length > 0){
-                    setGetData(prev => ({...prev, isLoading : false}));
-                    setGetData(prev => ({...prev, apiData : question}));
-
-                    /** dispatch an action */
-                    dispatch(Action.startExamAction({question, answers}))
-                } else{
-                    throw new Error("No Question Avalibale");
+                const data = await getServerData(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/questions`);
+                
+                if(data && data.questions.length > 0){
+                    setGetData({ isLoading : false, apiData : data.questions });
+                    dispatch(Action.startExamAction({ question : data.questions, answers : data.answers }));
+                } else {
+                    throw new Error("No Questions Available");
                 }
             } catch (error) {
-                setGetData(prev => ({...prev, isLoading : false}));
-                setGetData(prev => ({...prev, serverError : error}));
+                setGetData({ isLoading : false, serverError : error.message });
             }
         })();
     }, [dispatch]);
@@ -37,13 +44,12 @@ export const useFetchQestion = () => {
     return [getData, setGetData];
 }
 
-
 /** MoveAction Dispatch function */
 export const MoveNextQuestion = () => async (dispatch) => {
     try {
         dispatch(Action.moveNextAction()); /** increase trace by 1 */
     } catch (error) {
-        console.log(error)
+        console.error(error);
     }
 }
 
@@ -52,6 +58,6 @@ export const MovePrevQuestion = () => async (dispatch) => {
     try {
         dispatch(Action.movePrevAction()); /** decrease trace by 1 */
     } catch (error) {
-        console.log(error)
+        console.error(error);
     }
 }

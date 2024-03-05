@@ -1,8 +1,19 @@
 import React,{useRef} from 'react'
 import {Link} from 'react-router-dom'
+import { setUserId } from '../redux/resultReducer'
 import '../styles/Main.css'
+import { useDispatch } from 'react-redux'
 const Main = () => {
-const inputRef=useRef(null)
+  const inputRef = useRef(null)
+  const dispatch = useDispatch()
+
+
+  function startQuiz(){
+      if(inputRef.current?.value){
+          dispatch(setUserId(inputRef.current?.value))
+      }
+  }
+
 
   return (
     <div className='container'>
@@ -16,15 +27,13 @@ const inputRef=useRef(null)
       <li>Time for test will be 30 minutes</li>
       <li>The Result will be declared at the end of the quiz</li>  
       </ol>
-<form id='form'>
-<input ref={inputRef} type="text" placeholder='Username*'/>
+      <form id="form">
+      <input ref={inputRef} className="userid" type="text" placeholder='Username*' />
+  </form>
 
-</form>
-
-<div className='start'>
-<Link className='btn' to={'quiz'}>Start Quiz</Link>
-
-</div>
+  <div className='start'>
+      <Link className='btn' to={'quiz'} onClick={startQuiz}>Start Quiz</Link>
+  </div>
     </div>
 
     
